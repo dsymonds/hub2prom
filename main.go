@@ -163,6 +163,17 @@ func (hc *hubCollector) Collect(ch chan<- prometheus.Metric) {
 					tr.SetError()
 					continue // keep going anyway
 				}
+			case "contact":
+				switch rawStr {
+				case "closed":
+					gauge.Set(0)
+				case "open":
+					gauge.Set(1)
+				default:
+					tr.LazyPrintf("Unknown contact=%q for %q", rawValue, dev.Label)
+					tr.SetError()
+					continue // keep going anyway
+				}
 			}
 		}
 	}
